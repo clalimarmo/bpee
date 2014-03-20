@@ -1,0 +1,20 @@
+{
+  "name": "Javascript App Name",
+  "version": "0.0.0",
+  "description": "App description",
+  "main": "app/main.js",
+  "homepage": "http://github.com/clalimarmo/js-seed",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "requirejs": "~2.1.10"
+  },
+  "devDependencies": {}
+}
