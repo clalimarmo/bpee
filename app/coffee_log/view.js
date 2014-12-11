@@ -45,7 +45,7 @@ define(function(require) {
     };
 
     var $historyTable = function() {
-      return instance.$('.history tbody');
+      return instance.$('.history tbody.records');
     };
 
     var $newRecord = function() {
