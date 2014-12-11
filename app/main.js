@@ -3,5 +3,5 @@ requirejs.config({
   shim: {}
 });
 
-define(function(require) {
+define(function() {
 });

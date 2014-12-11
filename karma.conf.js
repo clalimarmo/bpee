@@ -24,6 +24,7 @@ module.exports = function(config) {
       //our code
       {pattern: 'build/**/*.js', included: false},
       {pattern: 'build/**/*.json', included: false},
+      {pattern: 'build/**/*.html', included: false},
       {pattern: 'spec/**/*_spec.js', included: false},
       {pattern: 'spec/**/*_spec.coffee', included: false},
       {pattern: 'spec/helpers/*.js', included: false},

@@ -95,7 +95,7 @@ module.exports = function(grunt) {
       },
       copy: {
         files: [
-          'app/index.html',
+          'app/**/*.html',
           'app/lib',
           'app/locales/**/*.json',
         ],
@@ -114,7 +114,7 @@ module.exports = function(grunt) {
     copy: {
       dev: {
         files: [
-          {src: 'app/index.html', dest: 'build/index.html'},
+          {expand: true, cwd: 'app', src: ['**/*.html'], dest: 'build'},
           {expand: true, cwd: 'app', src: ['**/*.png'], dest: 'build'},
           {expand: true, cwd: 'app', src: ['**/*.js'], dest: 'build'},
           {expand: true, cwd: 'app', src: ['**/*.json'], dest: 'build'},
@@ -122,7 +122,7 @@ module.exports = function(grunt) {
       },
       dist: {
         files: [
-          {src: 'app/index.html', dest: 'dist/index.html.example'},
+          {expand: true, cwd: 'app', src: ['**/*.html'], dest: 'dist'},
           {expand: true, cwd: 'app', src: ['images/**/*.png'], dest: 'dist'},
 
           //make sass files available in dev build (instead of the compiled
@@ -136,9 +136,6 @@ module.exports = function(grunt) {
         files: [
           //copy of a prod build to a test directory
           {expand: true, cwd: 'dist', src: ['**/*'], dest: '.tmp/testdist'},
-
-          //use the example index file included in dist build
-          {src: 'dist/index.html.example', dest: '.tmp/testdist/index.html'},
 
           //manually copy necessary third party js
           {src: 'build/lib/requirejs/require.js', dest: '.tmp/testdist/lib/requirejs/require.js'},
@@ -215,8 +212,7 @@ module.exports = function(grunt) {
     },
 
     bower: {
-      install: {
-      }
+      install: {}
     },
 
     connect: {

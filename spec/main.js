@@ -14,7 +14,12 @@ for (var file in window.__karma__.files) {
 requirejs.config({
   // Karma serves files from '/base'
   baseUrl: '/base/build',
-  paths: {},
+  paths: {
+    'text': 'lib/requirejs-text/text',
+    'jquery': 'lib/jquery/dist/jquery',
+    'backbone': 'lib/backbone-amd/backbone',
+    'underscore': 'lib/lodash/dist/lodash',
+  },
   shim: {},
   deps: tests,
 
