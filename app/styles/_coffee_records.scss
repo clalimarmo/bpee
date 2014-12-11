@@ -1,0 +1,14 @@
+main table {
+  margin: 10px;
+  border-collapse: collapse;
+  td {
+    vertical-align: top;
+    padding: 5px 15px;
+    border: 1px solid #ccc;
+  }
+  .reviews ul {
+    margin: 0;
+    padding: 0;
+    padding-left: 1em;
+  }
+}
