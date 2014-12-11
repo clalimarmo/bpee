@@ -234,13 +234,13 @@ module.exports = function(grunt) {
       dev: {
         options: {
           base: 'build',
-          port: 8000,
+          port: 3333,
         },
       },
       testdist: {
         options: {
           base: '.tmp/testdist',
-          port: 8001,
+          port: 3334,
           keepalive: 'true',
         },
       },

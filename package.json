@@ -1,6 +1,6 @@
 {
   "version": "0.0.0",
-  "description": "app description",
+  "description": "proof of concept - no custom backend",
   "devDependencies": {
     "bower": "~1.2.8",
     "connect-livereload": "~0.3.2",

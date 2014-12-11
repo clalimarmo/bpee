@@ -1,7 +1,7 @@
-Javascript Application
-======================
+# Barista Pro - Enterprise Edition
 
-Basic infrastructure for javascript application, with testing via mocha/karma.
+Proof of concept app, demonstrating a web application architectures that
+do not require the implemention of a custom server app or API.
 
 ## Setup
 
