@@ -11,12 +11,33 @@ requirejs.config({
 define(function(require) {
   var $ = require('jquery');
   var CoffeeLogView = require('coffee_log/view');
-  var fakeCoffeeLogger = require('stubs/coffee_logger');
+  var CoffeeLogger = require('coffee_log/coffee_logger');
+  var fakeDatastore = require('stubs/datastore');
+
+  var loading = true;
+
+  var showApp = function() {
+    loading = false;
+    $('main').show();
+    $('.loading-indicator').hide();
+  };
+
+  var coffeeLogger = CoffeeLogger({
+    filename: 'my_coffee_history',
+    datastore: fakeDatastore,
+    onFetched: showApp,
+  });
 
   $(function() {
+    if (loading) {
+      $('main').hide();
+    } else {
+      $('.loading-indicator').hide();
+    }
+
     CoffeeLogView({
       container: $('main'),
-      coffeeLogger: fakeCoffeeLogger,
+      coffeeLogger: coffeeLogger,
     });
   });
 });
