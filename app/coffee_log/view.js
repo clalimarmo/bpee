@@ -38,6 +38,7 @@ define(function(require) {
       $row.find('.barista').text(record.barista);
       $row.find('.method').text(record.method);
       $row.find('.time').text(record.time);
+      $row.find('.temperature').text(record.temperature);
       $row.find('.grind').text(record.grind);
 
       var $reviews = $row.find('.reviews ul');
@@ -65,6 +66,7 @@ define(function(require) {
         method: $record.find('.method').val(),
         grind: $record.find('.grind').val(),
         time: $record.find('.time').val(),
+        temperature: $record.find('.temperature').val(),
       };
 
       deps.coffeeLogger.addRecord(record);
