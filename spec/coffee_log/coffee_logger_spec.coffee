@@ -116,6 +116,10 @@ define (require) ->
         onFetchedCalled = true
         done()
 
+      anotherCallbackCalled = 'another callback called?'
+      anotherCallback = ->
+        anotherCallbackCalled = true
+
       # (onfetched should be called in the callback passed to datastore.get)
       mocks.datastore.get = (filename, handlers) ->
         setTimeout(1000)
@@ -126,3 +130,8 @@ define (require) ->
         datastore: mocks.datastore
         filename: 'smartlogic_coffee_history'
       )
+
+      coffeeLogger.onUpdated(anotherCallback)
+
+      expect(onFetchedCalled).to.be.true
+      expect(anotherCallbackCalled).to.be.true
