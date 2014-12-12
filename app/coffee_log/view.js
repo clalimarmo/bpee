@@ -7,28 +7,26 @@ define(function(require) {
 
   var CoffeeLogView = function(deps) {
     var initialize = function() {
-      redrawRows();
-      deps.coffeeLogger.onUpdated(redrawRows);
+      renderView();
+      renderHistoryRows();
+      deps.coffeeLogger.onUpdated(renderHistoryRows);
     };
 
     var renderView = function() {
       instance.$el.html(viewMarkup);
     };
 
-    var redrawRows = function() {
-      renderView();
-      renderHistoryRows();
-    };
-
     var renderHistoryRows = function() {
       var history = deps.coffeeLogger.history();
       var reviews = deps.coffeeLogger.reviews();
 
+      var $history = $historyTable();
+      $history.empty();
       for (var recordKey in deps.coffeeLogger.history()) {
         var record = history[recordKey];
         var recordReviews = reviews[recordKey];
         var $row = renderHistoryRow(record, recordReviews);
-        $historyTable().append($row);
+        $history.append($row);
       }
     };
 

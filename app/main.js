@@ -37,6 +37,7 @@ define(function(require) {
       datastore: datastore,
       onFetched: showApp,
     });
+    setInterval(coffeeLogger.fetch, 5000);
 
     $(function() {
       if (loading) {

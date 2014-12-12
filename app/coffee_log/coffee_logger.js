@@ -70,6 +70,8 @@ define(function() {
       }
     };
 
+    instance.fetch = fetch;
+
     initialize();
     return instance;
   };

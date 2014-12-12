@@ -98,7 +98,7 @@ define (require) ->
 
       expect(mocks.$container.text()).to.contain('Carlos')
 
-    it 're-renders when the coffee logger updates', ->
+    it 're-renders history when the coffee logger updates', ->
       mocks.coffeeLogger.updateCallbacks = []
       mocks.coffeeLogger.updated = ->
         for callback in mocks.coffeeLogger.updateCallbacks
@@ -111,6 +111,9 @@ define (require) ->
         container: mocks.$container
       )
 
+      # user starts typing
+      mocks.$container.find('.add-record .barista').val('Yair Fl')
+
       mocks.history[3] = {
         date: '2017-10-02'
         barista: 'Raymond'
@@ -121,4 +124,8 @@ define (require) ->
       }
       mocks.coffeeLogger.updated()
 
+      # new history is shown
       expect(mocks.$container.text()).to.contain('Raymond')
+
+      # but user's input is not interrupted
+      expect(mocks.$container.find('.add-record .barista').val()).to.eq('Yair Fl')
