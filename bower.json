@@ -18,7 +18,9 @@
     "requirejs-text": "~2.0.12",
     "jquery": "~2.1.0",
     "backbone-amd": "~1.1.0",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "json-gcs": "~0.0.4",
+    "google-oauther": "git@github.com:clalimarmo/google-oauther#~0.0.3"
   },
   "devDependencies": {}
 }

@@ -15,6 +15,12 @@ do not require the implemention of a custom server app or API.
 with a `./build` directory, and passing test suite, you're ready to
 start developing.
 
+## Configuring the GCS bucket for CORS
+
+Update cors.json with permitted origins, and run
+
+    gsutil cors set cors.json gs://<bucket-name>
+
 ## Building with Grunt
 
 The default task builds a development instance of the app, runs the linter,
