@@ -86,7 +86,7 @@ module.exports = function(grunt) {
         tasks: ['jshint:gruntfile']
       },
       dev: {
-        files: ['app/**/*.js', 'spec/**/*.js', 'app/**/*.html'],
+        files: ['app/**/*.js', 'spec/**/*.js', 'spec/**/*.coffee', 'app/**/*.html'],
         tasks: ['build', 'karma:unit', 'jshint']
       },
       jst: {
