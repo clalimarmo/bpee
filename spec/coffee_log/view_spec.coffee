@@ -38,6 +38,7 @@ define (require) ->
       mocks.coffeeLogger = {
         reviews: -> mocks.reviews
         history: -> mocks.history
+        onUpdated: -> return
       }
 
       mocks.$container = $('<div/>');
@@ -63,12 +64,8 @@ define (require) ->
 
     it 'adds records to the coffee log', ->
       mocks.records = []
-      mocks.coffeeLogger = {
-        history: -> {}
-        reviews: -> {}
-        addRecord: (record) ->
-          mocks.records.push(record)
-      }
+      mocks.coffeeLogger.addRecord = (record) ->
+        mocks.records.push(record)
       mocks.$container = $('<div/>')
 
       view = View(
@@ -93,3 +90,27 @@ define (require) ->
       expect(newRecord.time).to.eq('n/a')
 
       expect(mocks.$container.text()).to.contain('Carlos')
+
+    it 're-renders when the coffee logger updates', ->
+      mocks.coffeeLogger.updateCallbacks = []
+      mocks.coffeeLogger.updated = ->
+        for callback in mocks.coffeeLogger.updateCallbacks
+          callback(mocks.coffeeLogger)
+      mocks.coffeeLogger.onUpdated = (callback) ->
+        mocks.coffeeLogger.updateCallbacks.push(callback)
+
+      view = View(
+        coffeeLogger: mocks.coffeeLogger
+        container: mocks.$container
+      )
+
+      mocks.history[3] = {
+        date: '2017-10-02'
+        barista: 'Raymond'
+        method: 'espresso'
+        time: '12 s pull'
+        grind: '8 g'
+      }
+      mocks.coffeeLogger.updated()
+
+      expect(mocks.$container.text()).to.contain('Raymond')

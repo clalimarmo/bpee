@@ -7,12 +7,17 @@ define(function(require) {
 
   var CoffeeLogView = function(deps) {
     var initialize = function() {
-      renderView();
-      renderHistoryRows();
+      redrawRows();
+      deps.coffeeLogger.onUpdated(redrawRows);
     };
 
     var renderView = function() {
       instance.$el.html(viewMarkup);
+    };
+
+    var redrawRows = function() {
+      renderView();
+      renderHistoryRows();
     };
 
     var renderHistoryRows = function() {

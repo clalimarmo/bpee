@@ -2,15 +2,17 @@ define(function() {
   var CoffeeLogger = function(deps) {
     var datastore = deps.datastore;
     var filename = deps.filename;
-    var onFetched = deps.onFetched;
 
     var instance = {};
 
     var history = {};
     var reviews = {};
-    var lastHistoryRecordId = null;
+    var lastHistoryRecordId = 0;
+
+    var updatedCallbacks = [];
 
     var initialize = function() {
+      instance.onUpdated(deps.onFetched);
       fetch();
     };
 
@@ -23,13 +25,16 @@ define(function() {
     };
 
     var fetch = function() {
-      datastore.get(filename, function(data) {
-        history = data.history;
-        reviews = data.reviews;
-        lastHistoryRecordId = data.lastHistoryRecordId;
-        if (typeof(onFetched) === 'function') {
-          onFetched();
-        }
+      datastore.get(filename, {
+        error: save,
+        success: function(data) {
+          history = data.history;
+          reviews = data.reviews;
+          lastHistoryRecordId = data.lastHistoryRecordId;
+          for (var i in updatedCallbacks) {
+            updatedCallbacks[i]();
+          }
+        },
       });
     };
 
@@ -57,6 +62,12 @@ define(function() {
     instance.reviewRecord = function(recordId, review) {
       reviewsFor(recordId).push(review);
       save();
+    };
+
+    instance.onUpdated = function(callback) {
+      if (typeof callback === 'function') {
+        updatedCallbacks.push(callback);
+      }
     };
 
     initialize();

@@ -39,7 +39,7 @@ define (require) ->
 
       mocks.datastore = {
         put: (key, data) -> mocks.savedData[key] = data
-        get: (key, onFetched) -> onFetched(mocks.savedData[key])
+        get: (key, handlers) -> handlers.success(mocks.savedData[key])
       }
 
     it 'loads records from the datastore upon initialization', ->
@@ -50,6 +50,28 @@ define (require) ->
 
       expect(coffeeLogger.history()).to.deep.eq(mocks.savedData['smartlogic_coffee_history'].history)
       expect(coffeeLogger.reviews()).to.deep.eq(mocks.savedData['smartlogic_coffee_history'].reviews)
+
+    it 'initializes records in the datastore if it encounters an error', ->
+      datastorePutArgs = 'datastore.put was called with...'
+      mocks.datastore.get = (key, handlers) -> handlers.error()
+      mocks.datastore.put = (filename, data) -> datastorePutArgs = {
+        filename: filename
+        data: data
+      }
+
+      coffeeLogger = CoffeeLogger(
+        datastore: mocks.datastore
+        filename: 'smartlogic_coffee_history'
+      )
+
+      expect(coffeeLogger.history()).to.deep.eq({})
+      expect(coffeeLogger.reviews()).to.deep.eq({})
+
+      # the implication is that the error handler calls datastore.put with initial data
+      expect(datastorePutArgs.filename).to.eq('smartlogic_coffee_history')
+      expect(datastorePutArgs.data.history).to.deep.eq({})
+      expect(datastorePutArgs.data.reviews).to.deep.eq({})
+      expect(datastorePutArgs.data.lastHistoryRecordId).to.eq(0)
 
     it 'saves new records', ->
       coffeeLogger = CoffeeLogger(
@@ -88,16 +110,16 @@ define (require) ->
 
       coffeeLogger.reviewRecord(1, 'better than 7/11 - Dan')
 
-    it 'calls an onFetched callback once its data has been fetched', (done) ->
+    it 'calls onUpdated callbacks when its data has been fetched', (done) ->
       onFetchedCalled = 'on-fetched callback called?'
       onFetched = ->
         onFetchedCalled = true
         done()
 
       # (onfetched should be called in the callback passed to datastore.get)
-      mocks.datastore.get = (filename, callback) ->
+      mocks.datastore.get = (filename, handlers) ->
         setTimeout(1000)
-        callback(mocks.savedData[filename])
+        handlers.success(mocks.savedData[filename])
 
       coffeeLogger = CoffeeLogger(
         onFetched: onFetched
