@@ -98,6 +98,13 @@ define (require) ->
 
       expect(mocks.$container.text()).to.contain('Carlos')
 
+      # also resets the form
+      expect($recordForm.find('.barista').val()).to.be.empty
+      expect($recordForm.find('.method').val()).to.be.empty
+      expect($recordForm.find('.grind').val()).to.be.empty
+      expect($recordForm.find('.time').val()).to.be.empty
+      expect($recordForm.find('.temperature').val()).to.be.empty
+
     it 're-renders history when the coffee logger updates', ->
       mocks.coffeeLogger.updateCallbacks = []
       mocks.coffeeLogger.updated = ->

@@ -66,6 +66,7 @@ define(function(require) {
         time: $record.find('.time').val(),
         temperature: $record.find('.temperature').val(),
       };
+      $record.find('input[type="text"]').val('');
 
       deps.coffeeLogger.addRecord(record);
       renderHistoryRow(record, []).appendTo($historyTable());
