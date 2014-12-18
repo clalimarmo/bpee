@@ -33,7 +33,7 @@ define(function(require) {
     };
 
     var coffeeLogger = CoffeeLogger({
-      filename: 'my_coffee_history',
+      filename: authenticator.user().id,
       datastore: datastore,
       onFetched: showApp,
     });
