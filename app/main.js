@@ -35,7 +35,10 @@ define(function(require) {
     };
 
     var coffeeLogger = CoffeeLogger({
-      filename: authenticator.user().id,
+      file: {
+        name: authenticator.user().id,
+        displayName: authenticator.user().displayName,
+      },
       datastore: datastore,
       onFetched: showApp,
     });

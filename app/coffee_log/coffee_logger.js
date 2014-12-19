@@ -1,7 +1,8 @@
 define(function() {
   var CoffeeLogger = function(deps) {
     var datastore = deps.datastore;
-    var filename = deps.filename;
+    var filename = deps.file.name;
+    var fileDisplayName = deps.file.displayName;
 
     var instance = {};
 
@@ -17,19 +18,23 @@ define(function() {
     };
 
     var save = function() {
-      datastore.put(filename, {
+      var data = {
+        fileDisplayName: fileDisplayName,
         history: history,
         reviews: reviews,
         lastHistoryRecordId: lastHistoryRecordId,
-      }, {
-        displayName: 'test log'
-      });
+      };
+      var metadata = {
+        displayName: fileDisplayName,
+      };
+      datastore.put(filename, data, metadata);
     };
 
     var fetch = function() {
       datastore.get(filename, {
         error: save,
         success: function(data) {
+          fileDisplayName = data.fileDisplayName;
           history = data.history;
           reviews = data.reviews;
           lastHistoryRecordId = data.lastHistoryRecordId;

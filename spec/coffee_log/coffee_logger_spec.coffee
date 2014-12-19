@@ -9,6 +9,7 @@ define (require) ->
     beforeEach ->
       mocks.savedData = {}
       mocks.savedData['smartlogic_coffee_history'] =
+        fileDisplayName: 'Smartlogic Coffee Log'
         lastHistoryRecordId: 2
         history: {
           1: {
@@ -45,14 +46,18 @@ define (require) ->
     it 'exposes filename', ->
       coffeeLogger = CoffeeLogger(
         datastore: mocks.datastore
-        filename: 'smartlogic_coffee_history'
+        file:
+          name: 'smartlogic_coffee_history'
+          displayName: 'Smartlogic Coffee Log'
       )
       expect(coffeeLogger.filename()).to.eq('smartlogic_coffee_history')
 
     it 'loads records from the datastore upon initialization', ->
       coffeeLogger = CoffeeLogger(
         datastore: mocks.datastore
-        filename: 'smartlogic_coffee_history'
+        file:
+          name: 'smartlogic_coffee_history'
+          displayName: 'Smartlogic Coffee Log'
       )
 
       expect(coffeeLogger.history()).to.deep.eq(mocks.savedData['smartlogic_coffee_history'].history)
@@ -68,7 +73,9 @@ define (require) ->
 
       coffeeLogger = CoffeeLogger(
         datastore: mocks.datastore
-        filename: 'smartlogic_coffee_history'
+        file:
+          name: 'smartlogic_coffee_history'
+          displayName: 'Smartlogic Coffee Log'
       )
 
       expect(coffeeLogger.history()).to.deep.eq({})
@@ -83,7 +90,9 @@ define (require) ->
     it 'saves new records', ->
       coffeeLogger = CoffeeLogger(
         datastore: mocks.datastore
-        filename: 'smartlogic_coffee_history'
+        file:
+          name: 'smartlogic_coffee_history'
+          displayName: 'Smartlogic Coffee Log'
       )
 
       coffeeLogger.addRecord(
@@ -112,7 +121,9 @@ define (require) ->
     it 'saves new reviews', ->
       coffeeLogger = CoffeeLogger(
         datastore: mocks.datastore
-        filename: 'smartlogic_coffee_history'
+        file:
+          name: 'smartlogic_coffee_history'
+          displayName: 'Smartlogic Coffee Log'
       )
 
       coffeeLogger.reviewRecord(1, 'better than 7/11 - Dan')
@@ -135,7 +146,9 @@ define (require) ->
       coffeeLogger = CoffeeLogger(
         onFetched: onFetched
         datastore: mocks.datastore
-        filename: 'smartlogic_coffee_history'
+        file:
+          name: 'smartlogic_coffee_history'
+          displayName: 'Smartlogic Coffee Log'
       )
 
       coffeeLogger.onUpdated(anotherCallback)
