@@ -2,6 +2,7 @@ header {
   margin: 0;
   padding: 10px;
   background-color: black;
+  position: relative;
 
   h1, p {
     margin: 0;
@@ -13,5 +14,14 @@ header {
   p {
     font-size: 1.0em;
     color: gray;
+  }
+  nav {
+    position: absolute;
+    text-align: right;
+    padding: 10px;
+    right: 0;
+    top: 0;
+    font-size: .8em;
+    color: #999;
   }
 }
