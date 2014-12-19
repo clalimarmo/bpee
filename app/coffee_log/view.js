@@ -18,19 +18,17 @@ define(function(require) {
 
     var renderHistoryRows = function() {
       var history = deps.coffeeLogger.history();
-      var reviews = deps.coffeeLogger.reviews();
 
       var $history = $historyTable();
       $history.empty();
       for (var recordKey in deps.coffeeLogger.history()) {
         var record = history[recordKey];
-        var recordReviews = reviews[recordKey];
-        var $row = renderHistoryRow(record, recordReviews);
+        var $row = renderHistoryRow(record);
         $history.append($row);
       }
     };
 
-    var renderHistoryRow = function(record, recordReviews) {
+    var renderHistoryRow = function(record) {
       var $row = $(rowMarkup);
       $row.find('.date').text(record.date);
       $row.find('.barista').text(record.barista);
@@ -38,13 +36,6 @@ define(function(require) {
       $row.find('.time').text(record.time);
       $row.find('.temperature').text(record.temperature);
       $row.find('.grind').text(record.grind);
-
-      var $reviews = $row.find('.reviews ul');
-      for (var i in recordReviews) {
-        var review = recordReviews[i];
-        $reviews.append($('<li>').text(review));
-      }
-
       return $row;
     };
 

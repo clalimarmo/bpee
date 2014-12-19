@@ -10,7 +10,7 @@ define(function() {
     var updatedCallbacks = [];
 
     var initialize = function() {
-      file.onLoad(onFileLoad);
+      file.onLoaded(onFileLoaded);
     };
 
     var runUpdatedCallbacks = function() {
@@ -24,11 +24,12 @@ define(function() {
     };
 
     var importData = function(data) {
-      history = data.history;
+      data = data || {};
+      history = data.history || [];
     };
 
-    var onFileLoad = function(data) {
-      importData(data);
+    var onFileLoaded = function() {
+      importData(file.data());
       runUpdatedCallbacks();
     };
 

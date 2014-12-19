@@ -13,6 +13,7 @@ requirejs.config({
 define(function(require) {
   var $ = require('jquery');
   var JsonGCS = require('json-gcs');
+  var DatastoreFile = require('datastore_file');
   var CoffeeLogView = require('coffee_log/view');
   var FileSelectorView = require('file_selector/view');
   var CoffeeLogger = require('coffee_log/coffee_logger');
@@ -24,6 +25,7 @@ define(function(require) {
     authenticator: authenticator,
     bucketName: 'smartlogic_bpee',
   });
+  var file = DatastoreFile({datastore: datastore});
 
   var initializeApp = function() {
     var loading = true;
@@ -34,15 +36,8 @@ define(function(require) {
       $('.loading-indicator').hide();
     };
 
-    var coffeeLogger = CoffeeLogger({
-      file: {
-        name: authenticator.user().id,
-        displayName: authenticator.user().displayName,
-      },
-      datastore: datastore,
-      onFetched: showApp,
-    });
-    setInterval(coffeeLogger.fetch, 5000);
+    var coffeeLogger = CoffeeLogger({file: file});
+    coffeeLogger.onUpdated(showApp);
 
     $(function() {
       if (loading) {
@@ -57,16 +52,13 @@ define(function(require) {
       });
 
       var fileSelectorView = FileSelectorView({
-        fileListParser: jsonGcsIndexParser,
-        getSelectedFile: coffeeLogger.filename,
         container: $('nav'),
+        file: file,
       });
       datastore.index({success: fileSelectorView.showFiles});
       setInterval(60000, function() {
         datastore.index({success: fileSelectorView.showFiles});
       });
-
-      fileSelectorView.onSelected(coffeeLogger.open);
     });
   };
 
