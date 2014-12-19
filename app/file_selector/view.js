@@ -5,7 +5,11 @@ define(function(require) {
   var viewMarkup = require('text!file_selector/view.html');
 
   var defaultFileListParser = function(items) {
-    return items;
+    var filenames = [];
+    for (var i in items) {
+      filenames.push(items[i].name);
+    }
+    return filenames;
   };
 
   var FileSelectorView = function(deps) {
@@ -13,17 +17,29 @@ define(function(require) {
       deps.fileListParser = defaultFileListParser;
     }
 
+    var fileList = [];
+
     var initialize = function() {
       instance.$el.html(viewMarkup);
+      deps.file.onLoaded(showSelectedFile);
     };
 
     var onSelected = function() {
       deps.file.open(selectedFilename());
     };
 
+    var fileExists = function(filename) {
+      return fileList.indexOf(filename) !== -1;
+    };
+
     var selectNew = function() {
-      var newFilename = window.prompt("New Filename");
+      var newFilename = window.prompt("Choose a filename:");
       var file = deps.file;
+
+      if (fileExists(newFilename)) {
+        return file.open(newFilename);
+      };
+
       file.init(newFilename, null, {
         success: function() {
           file.dir(instance.showFiles);
@@ -34,6 +50,10 @@ define(function(require) {
 
     var $select = function() {
       return instance.$('select');
+    };
+
+    var showSelectedFile = function() {
+      $select().val(deps.file.filename());
     };
 
     var selectedFilename = function() {
@@ -49,12 +69,13 @@ define(function(require) {
 
     var instance = new BackboneView({el: deps.container});
 
-    instance.showFiles = function(fileList) {
-      var parsedFileList = deps.fileListParser(fileList);
-      for (var i in parsedFileList) {
-        var file = parsedFileList[i];
+    instance.showFiles = function(_fileList) {
+      fileList = deps.fileListParser(_fileList);
+      $select().empty();
+      for (var i in fileList) {
+        var filename = fileList[i];
         var $option = $('<option/>');
-        $option.val(file.name).text(file.name);
+        $option.val(filename).text(filename);
         $option.appendTo($select());
       }
       $select().val(deps.file.filename());
