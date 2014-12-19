@@ -8,15 +8,18 @@ define(function(require) {
   var CoffeeLogView = function(deps) {
     var initialize = function() {
       renderView();
-      renderHistoryRows();
-      deps.coffeeLogger.onUpdated(renderHistoryRows);
+      renderContent();
+      deps.coffeeLogger.onUpdated(renderContent);
     };
 
     var renderView = function() {
       instance.$el.html(viewMarkup);
     };
 
-    var renderHistoryRows = function() {
+    var renderContent = function() {
+      $content().toggle(deps.coffeeLogger.fileIsOpen());
+      $nothingLoadedIndicator().toggle(!deps.coffeeLogger.fileIsOpen());
+
       var history = deps.coffeeLogger.history();
 
       var $history = $historyTable();
@@ -37,6 +40,14 @@ define(function(require) {
       $row.find('.temperature').text(record.temperature);
       $row.find('.grind').text(record.grind);
       return $row;
+    };
+
+    var $content = function() {
+      return instance.$('.content');
+    };
+
+    var $nothingLoadedIndicator = function() {
+      return instance.$('.nothing-loaded');
     };
 
     var $historyTable = function() {

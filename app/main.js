@@ -28,24 +28,8 @@ define(function(require) {
   var file = DatastoreFile({datastore: datastore});
 
   var initializeApp = function() {
-    var loading = true;
-
-    var showApp = function() {
-      loading = false;
-      $('main').show();
-      $('.loading-indicator').hide();
-    };
-
-    var coffeeLogger = CoffeeLogger({file: file});
-    coffeeLogger.onUpdated(showApp);
-
     $(function() {
-      if (loading) {
-        $('main').hide();
-      } else {
-        $('.loading-indicator').hide();
-      }
-
+      var coffeeLogger = CoffeeLogger({file: file});
       CoffeeLogView({
         container: $('main'),
         coffeeLogger: coffeeLogger,
@@ -63,7 +47,6 @@ define(function(require) {
   };
 
   authenticator.onAuthenticate(initializeApp);
-
   authenticator.run({
     scope: ['https://www.googleapis.com/auth/devstorage.read_write'],
     clientID: '712101487188-imrj0vr3dkrbdvhbu0c9b9k2c0hfss41.apps.googleusercontent.com'

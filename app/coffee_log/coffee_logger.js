@@ -52,6 +52,10 @@ define(function() {
       }
     };
 
+    instance.fileIsOpen = function() {
+      return deps.file.filename() !== null;
+    };
+
     initialize();
     return instance;
   };
