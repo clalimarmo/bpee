@@ -14,7 +14,9 @@ define(function(require) {
   var $ = require('jquery');
   var JsonGCS = require('json-gcs');
   var CoffeeLogView = require('coffee_log/view');
+  var FileSelectorView = require('file_selector/view');
   var CoffeeLogger = require('coffee_log/coffee_logger');
+  var jsonGcsIndexParser = require('file_selector/json_gcs_index_parser');
 
   var authenticator = require('google-oauther');
   var datastore = JsonGCS({
@@ -50,6 +52,18 @@ define(function(require) {
         container: $('main'),
         coffeeLogger: coffeeLogger,
       });
+
+      var fileSelectorView = FileSelectorView({
+        fileListParser: jsonGcsIndexParser,
+        getSelectedFile: coffeeLogger.filename,
+        container: $('nav'),
+      });
+      datastore.index({success: fileSelectorView.showFiles});
+      setInterval(60000, function() {
+        datastore.index({success: fileSelectorView.showFiles});
+      });
+
+      fileSelectorView.onSelected(coffeeLogger.open);
     });
   };
 

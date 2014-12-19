@@ -21,6 +21,8 @@ define(function() {
         history: history,
         reviews: reviews,
         lastHistoryRecordId: lastHistoryRecordId,
+      }, {
+        displayName: 'test log'
       });
     };
 
@@ -43,6 +45,10 @@ define(function() {
         reviews[recordID] = [];
       }
       return reviews[recordID];
+    };
+
+    instance.filename = function() {
+      return filename;
     };
 
     instance.history = function() {
@@ -68,6 +74,11 @@ define(function() {
       if (typeof callback === 'function') {
         updatedCallbacks.push(callback);
       }
+    };
+
+    instance.open = function(_filename) {
+      filename = _filename;
+      fetch();
     };
 
     instance.fetch = fetch;

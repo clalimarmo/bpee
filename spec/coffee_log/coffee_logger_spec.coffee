@@ -42,6 +42,13 @@ define (require) ->
         get: (key, handlers) -> handlers.success(mocks.savedData[key])
       }
 
+    it 'exposes filename', ->
+      coffeeLogger = CoffeeLogger(
+        datastore: mocks.datastore
+        filename: 'smartlogic_coffee_history'
+      )
+      expect(coffeeLogger.filename()).to.eq('smartlogic_coffee_history')
+
     it 'loads records from the datastore upon initialization', ->
       coffeeLogger = CoffeeLogger(
         datastore: mocks.datastore

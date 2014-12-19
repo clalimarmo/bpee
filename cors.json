@@ -4,7 +4,9 @@
       "http://localhost:3333"
     ],
     "responseHeader": [
-      "Authorization"
+      "Accept",
+      "Authorization",
+      "Content-Type"
     ],
     "method": ["GET", "HEAD", "OPTIONS", "POST", "DELETE"],
     "maxAgeSeconds": 3600
