@@ -7,8 +7,8 @@
       <th>Date</th>
       <th>Barista</th>
       <th>Method</th>
-      <th>Brew Time</th>
-      <th>Brew Temp</th>
+      <th>Brew Time (s)</th>
+      <th>Brew Temp (&deg;F)</th>
       <th>Grind</th>
       <th>Roast</th>
       <th>Capacity Setting</th>
@@ -21,11 +21,11 @@
   </tbody>
   <tbody class="add-record">
     <td></td>
-    <td><input name="barista" type="text" class="value" /></td>
+    <td><input name="barista" type="text" class="value" readonly /></td>
     <td>
       <select name="method" class="value">
+        <option value="inverted" selected>inverted</option>
         <option value="standard">standard</option>
-        <option value="inverted">inverted</option>
       </select>
     </td>
     <td><input name="brew_time" type="number" class="value" /></td>
@@ -34,7 +34,7 @@
       <select name="grind" class="value">
         <option value="fine">fine</option>
         <option value="medium-fine">medium-fine</option>
-        <option value="medium">medium</option>
+        <option value="medium" selected>medium</option>
         <option value="medium-coarse">medium-coarse</option>
         <option value="coarse">coarse</option>
       </select>
@@ -42,13 +42,13 @@
     <td>
       <select name="roast" class="value">
         <option value="light">light</option>
-        <option value="medium">medium</option>
+        <option value="medium" selected>medium</option>
         <option value="dark">dark</option>
       </select>
     </td>
-    <td><input name="capacity_setting" type="number" min="1" max="4" class="value" /></td>
-    <td><input name="grind_scoops" type="number" min="0" class="value" /></td>
-    <td><input name="rating" type="number" min="0" max="1" step=".01" class="value" /></td>
+    <td><input name="capacity_setting" type="number" min="1" max="4" class="value" value="4" /></td>
+    <td><input name="grind_scoops" type="number" min="0" step=".25" class="value" value="1.5" /></td>
+    <td><input name="rating" type="number" min="0" max="1" step=".01" class="value" value=".5" /></td>
     <td><input type="submit" value="Add Record" /></td>
   </tbody>
 </table>
