@@ -41,9 +41,14 @@ define(function(require) {
         file: file,
       });
       datastore.index({success: fileSelectorView.showFiles});
-      setInterval(60000, function() {
+      setInterval(function() {
+        if (file.filename()) {
+          file.open(file.filename());
+        }
+      }, 5000);
+      setInterval(function() {
         datastore.index({success: fileSelectorView.showFiles});
-      });
+      }, 60000);
     });
   };
 
