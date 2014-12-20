@@ -40,6 +40,7 @@ define(function() {
     };
 
     instance.addRecord = function(record) {
+      record.date = new Date();
       history.push(record);
       save();
     };

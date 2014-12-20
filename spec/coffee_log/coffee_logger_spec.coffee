@@ -56,5 +56,13 @@ define (require) ->
       coffeeLogger.addRecord(newRecord)
 
       expect(coffeeLogger.history()).to.deep.include(newRecord)
+
       expect(mocks.file.savedData).to.be.an('object')
-      expect(mocks.file.savedData.history).to.deep.include(newRecord)
+
+      savedRecord = mocks.file.savedData.history[0]
+      expect(savedRecord.barista).to.eq('intern')
+      expect(savedRecord.coffeeQuality).to.eq('poor')
+
+      # expect new record's date is within 1 second accuracy
+      now = new Date()
+      expect(now - savedRecord.date).to.be.below(1000)
