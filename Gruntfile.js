@@ -122,7 +122,8 @@ module.exports = function(grunt) {
       },
       dist: {
         files: [
-          {expand: true, cwd: 'app', src: ['**/*.html'], dest: 'dist'},
+          {expand: true, cwd: 'build', src: ['**/require.js'], dest: 'dist'},
+          {expand: true, cwd: 'build', src: ['index.html'], dest: 'dist'},
           {expand: true, cwd: 'app', src: ['images/**/*.png'], dest: 'dist'},
 
           //make sass files available in dev build (instead of the compiled
