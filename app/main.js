@@ -37,6 +37,7 @@ define(function(require) {
 
       var fileSelectorView = FileSelectorView({
         container: $('nav'),
+        newFilePrompt: function(_prompt) { return window.prompt(_prompt); },
         file: file,
       });
       datastore.index({success: fileSelectorView.showFiles});

@@ -4,7 +4,7 @@ define(function(require) {
 
   var viewMarkup = require('text!file_selector/view.html');
 
-  var defaultFileListParser = function(items) {
+  var fileListParser = function(items) {
     var filenames = [];
     for (var i in items) {
       filenames.push(items[i].name);
@@ -13,10 +13,6 @@ define(function(require) {
   };
 
   var FileSelectorView = function(deps) {
-    if (typeof deps.fileListParser !== 'function') {
-      deps.fileListParser = defaultFileListParser;
-    }
-
     var fileList = [];
 
     var initialize = function() {
@@ -33,7 +29,7 @@ define(function(require) {
     };
 
     var selectNew = function() {
-      var newFilename = window.prompt("Choose a filename:");
+      var newFilename = deps.newFilePrompt("Choose a filename:");
       var file = deps.file;
 
       if (fileExists(newFilename)) {
@@ -70,7 +66,7 @@ define(function(require) {
     var instance = new BackboneView({el: deps.container});
 
     instance.showFiles = function(_fileList) {
-      fileList = deps.fileListParser(_fileList);
+      fileList = fileListParser(_fileList);
       $select().empty();
       for (var i in fileList) {
         var filename = fileList[i];
@@ -78,7 +74,7 @@ define(function(require) {
         $option.val(filename).text(filename);
         $option.appendTo($select());
       }
-      $select().val(deps.file.filename());
+      showSelectedFile();
     };
 
     initialize();
