@@ -4,9 +4,14 @@ define(function(require) {
 
   var viewMarkup = require('text!coffee_log/view.html');
   var rowMarkup = require('text!coffee_log/row.html');
-  var fieldTypeMap = {
-    'number': Number,
-    'text': String,
+
+  var castFieldValue = function($field) {
+    var fieldTypeMap = {
+      'number': Number,
+      'text': String,
+    };
+    var typeCast = fieldTypeMap[$field.attr('type')] || String;
+    return typeCast($field.val());
   };
 
   var CoffeeLogView = function(deps) {
@@ -40,7 +45,12 @@ define(function(require) {
       var $row = $(rowMarkup);
       for (var key in record) {
         var $cell = $row.find('.' + key);
-        $cell.text(String(record[key]));
+        var value = record[key];
+        var displayValue = String(value);
+        if (key === 'date') {
+          displayValue = (new Date(value)).toISOString().split('T')[0];
+        }
+        $cell.text(displayValue);
       }
       return $row;
     };
@@ -67,8 +77,7 @@ define(function(require) {
 
       $record.find('.value').each(function() {
         var $field = $(this);
-        var typeCast = fieldTypeMap[$field.attr('type')] || String;
-        record[$field.attr('name')] = typeCast($field.val());
+        record[$field.attr('name')] = castFieldValue($field);
       });
 
       deps.coffeeLogger.addRecord(record);
