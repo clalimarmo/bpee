@@ -17,7 +17,6 @@ define(function(require) {
   var CoffeeLogView = require('coffee_log/view');
   var FileSelectorView = require('file_selector/view');
   var CoffeeLogger = require('coffee_log/coffee_logger');
-  var jsonGcsIndexParser = require('file_selector/json_gcs_index_parser');
 
   var authenticator = require('google-oauther');
   var datastore = JsonGCS({

@@ -38,7 +38,7 @@ define(function(require) {
 
       if (fileExists(newFilename)) {
         return file.open(newFilename);
-      };
+      }
 
       file.init(newFilename, null, {
         success: function() {
