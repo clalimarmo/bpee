@@ -160,9 +160,9 @@ module.exports = function(grunt) {
     requirejs: {
       compile: {
         options: {
-          name: 'app',
-          mainConfigFile: 'build/app.js',
-          out: 'dist/app.js',
+          name: 'main',
+          mainConfigFile: 'build/main.js',
+          out: 'dist/main.js',
           optimize: 'uglify2',
         },
       },
