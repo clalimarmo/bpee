@@ -31,6 +31,7 @@ define(function(require) {
     $(function() {
       var coffeeLogger = CoffeeLogger({file: file});
       CoffeeLogView({
+        barista: authenticator.user().displayName,
         container: $('main'),
         coffeeLogger: coffeeLogger,
       });
