@@ -48,7 +48,7 @@ Building for use in production (outputs to `dist` directory):
     $ grunt build:dist
 
 Testing production build in the sample `index.html` used for development
-(outputs to `.tmp/testdist`, and serves at https://localhost:8001):
+(outputs to `.tmp/testdist`, and serves at https://localhost:3334):
 
     $ grunt testdist
 
