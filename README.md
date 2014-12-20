@@ -35,7 +35,7 @@ Rebuilding and running tests automatically, when source code is changed
 
     $ grunt watch
 
-The same, but with the app served at https://localhost:8000
+The same, but with the app served at https://localhost:3333
 
     $ grunt server
 
