@@ -1,7 +1,8 @@
 # Barista Pro - Enterprise Edition
 
-Proof of concept app, demonstrating a web application architectures that
-do not require the implemention of a custom server app or API.
+Proof of concept app, demonstrating a web application architecture that
+does not require the implemention of a custom server app or API, by using
+a cloud storage API for data persistence.
 
 ## Setup
 
