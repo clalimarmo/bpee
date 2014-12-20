@@ -5,17 +5,15 @@ define(function() {
     var instance = {};
 
     var history = [];
-    var lastHistoryRecordId = 0;
-
-    var updatedCallbacks = [];
+    var onFileLoadedCallbacks = [];
 
     var initialize = function() {
       file.onLoaded(onFileLoaded);
     };
 
-    var runUpdatedCallbacks = function() {
-      for (var i in updatedCallbacks) {
-        updatedCallbacks[i]();
+    var runOnFileLoadedCallbacks = function() {
+      for (var i in onFileLoadedCallbacks) {
+        onFileLoadedCallbacks[i]();
       }
     };
 
@@ -30,7 +28,7 @@ define(function() {
 
     var onFileLoaded = function() {
       importData(file.data());
-      runUpdatedCallbacks();
+      runOnFileLoadedCallbacks();
     };
 
     var save = function() {
@@ -46,9 +44,9 @@ define(function() {
       save();
     };
 
-    instance.onUpdated = function(callback) {
+    instance.onFileLoaded = function(callback) {
       if (typeof callback === 'function') {
-        updatedCallbacks.push(callback);
+        onFileLoadedCallbacks.push(callback);
       }
     };
 

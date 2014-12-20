@@ -9,7 +9,7 @@ define(function(require) {
     var initialize = function() {
       renderView();
       renderContent();
-      deps.coffeeLogger.onUpdated(renderContent);
+      deps.coffeeLogger.onFileLoaded(renderContent);
     };
 
     var renderView = function() {

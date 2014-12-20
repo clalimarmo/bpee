@@ -7,151 +7,54 @@ define (require) ->
     mocks = {}
 
     beforeEach ->
-      mocks.savedData = {}
-      mocks.savedData['smartlogic_coffee_history'] =
-        fileDisplayName: 'Smartlogic Coffee Log'
-        lastHistoryRecordId: 2
-        history: {
-          1: {
-            date: '2014-12-03'
-            barista: 'Brian'
-            method: 'Aeropush (inverted)'
-            time: '2 minutes'
-            grind: '1.5 scoops medium roast, fine grind'
-          }
-          2: {
-            date: '2014-12-03'
-            barista: 'Giancarlo'
-            method: 'Aeropush (normal)'
-            time: '90 s'
-            grind: '2 scoops medium roast, fine grind'
-          }
-        }
-        reviews: {
-          1: [
-            'pretty good - Brian'
-            'yuck - Carlos'
-            'hot dog water - Ara'
-          ]
-          2: [
-            'terrible'
-          ]
-        }
+      mocks.file = {}
+      mocks.file.data = ->
+        history: [
+          {barista: 'Carlos', time: '50 seconds'},
+          {barista: 'Gian', time: '180 seconds'},
+        ]
+      mocks.file.onLoadedCallback = null
+      mocks.file.onLoaded = (cb) -> mocks.file.onLoadedCallback = cb
 
-      mocks.datastore = {
-        put: (key, data) -> mocks.savedData[key] = data
-        get: (key, handlers) -> handlers.success(mocks.savedData[key])
-      }
+    it 'loads history from a file', ->
+      coffeeLogger = CoffeeLogger(file: mocks.file)
 
-    it 'exposes filename', ->
-      coffeeLogger = CoffeeLogger(
-        datastore: mocks.datastore
-        file:
-          name: 'smartlogic_coffee_history'
-          displayName: 'Smartlogic Coffee Log'
-      )
-      expect(coffeeLogger.filename()).to.eq('smartlogic_coffee_history')
+      mocks.file.onLoadedCallback()
+      expect(coffeeLogger.history()).to.deep.eq(mocks.file.data().history)
 
-    it 'loads records from the datastore upon initialization', ->
-      coffeeLogger = CoffeeLogger(
-        datastore: mocks.datastore
-        file:
-          name: 'smartlogic_coffee_history'
-          displayName: 'Smartlogic Coffee Log'
-      )
+    it 'runs onUpdated callbacks when the file loads', ->
+      anotherCallbackCalled = 'onUpdated callback called?'
+      makeTestPass = -> anotherCallbackCalled = true
 
-      expect(coffeeLogger.history()).to.deep.eq(mocks.savedData['smartlogic_coffee_history'].history)
-      expect(coffeeLogger.reviews()).to.deep.eq(mocks.savedData['smartlogic_coffee_history'].reviews)
+      coffeeLogger = CoffeeLogger(file: mocks.file)
+      coffeeLogger.onFileLoaded(makeTestPass)
 
-    it 'initializes records in the datastore if it encounters an error', ->
-      datastorePutArgs = 'datastore.put was called with...'
-      mocks.datastore.get = (key, handlers) -> handlers.error()
-      mocks.datastore.put = (filename, data) -> datastorePutArgs = {
-        filename: filename
-        data: data
-      }
+      mocks.file.onLoadedCallback()
 
-      coffeeLogger = CoffeeLogger(
-        datastore: mocks.datastore
-        file:
-          name: 'smartlogic_coffee_history'
-          displayName: 'Smartlogic Coffee Log'
-      )
-
-      expect(coffeeLogger.history()).to.deep.eq({})
-      expect(coffeeLogger.reviews()).to.deep.eq({})
-
-      # the implication is that the error handler calls datastore.put with initial data
-      expect(datastorePutArgs.filename).to.eq('smartlogic_coffee_history')
-      expect(datastorePutArgs.data.history).to.deep.eq({})
-      expect(datastorePutArgs.data.reviews).to.deep.eq({})
-      expect(datastorePutArgs.data.lastHistoryRecordId).to.eq(0)
-
-    it 'saves new records', ->
-      coffeeLogger = CoffeeLogger(
-        datastore: mocks.datastore
-        file:
-          name: 'smartlogic_coffee_history'
-          displayName: 'Smartlogic Coffee Log'
-      )
-
-      coffeeLogger.addRecord(
-        date: '2018-12-03'
-        barista: 'Sam'
-        method: 'Pour over'
-        time: 'n/a'
-        grind: '12 grams dark roast, fine grind'
-      )
-
-      savedData = mocks.savedData['smartlogic_coffee_history']
-      expect(savedData).to.be.ok
-
-      savedHistory = savedData.history
-      expect(savedHistory).to.be.ok
-
-      savedRecord = savedHistory[3]
-      expect(savedRecord).to.be.ok
-
-      expect(savedRecord.date).to.eq('2018-12-03')
-      expect(savedRecord.barista).to.eq('Sam')
-      expect(savedRecord.method).to.eq('Pour over')
-      expect(savedRecord.time).to.eq('n/a')
-      expect(savedRecord.grind).to.eq('12 grams dark roast, fine grind')
-
-    it 'saves new reviews', ->
-      coffeeLogger = CoffeeLogger(
-        datastore: mocks.datastore
-        file:
-          name: 'smartlogic_coffee_history'
-          displayName: 'Smartlogic Coffee Log'
-      )
-
-      coffeeLogger.reviewRecord(1, 'better than 7/11 - Dan')
-
-    it 'calls onUpdated callbacks when its data has been fetched', (done) ->
-      onFetchedCalled = 'on-fetched callback called?'
-      onFetched = ->
-        onFetchedCalled = true
-        done()
-
-      anotherCallbackCalled = 'another callback called?'
-      anotherCallback = ->
-        anotherCallbackCalled = true
-
-      # (onfetched should be called in the callback passed to datastore.get)
-      mocks.datastore.get = (filename, handlers) ->
-        setTimeout(1000)
-        handlers.success(mocks.savedData[filename])
-
-      coffeeLogger = CoffeeLogger(
-        onFetched: onFetched
-        datastore: mocks.datastore
-        file:
-          name: 'smartlogic_coffee_history'
-          displayName: 'Smartlogic Coffee Log'
-      )
-
-      coffeeLogger.onUpdated(anotherCallback)
-
-      expect(onFetchedCalled).to.be.true
       expect(anotherCallbackCalled).to.be.true
+
+    it 'considers its file closed if there is no filename', ->
+      mocks.file.filename = -> null
+
+      coffeeLogger = CoffeeLogger(file: mocks.file)
+      expect(coffeeLogger.fileIsOpen()).to.be.false
+
+    it 'considers its file open if there is a filename', ->
+      mocks.file.filename = -> 'my-file.txt'
+
+      coffeeLogger = CoffeeLogger(file: mocks.file)
+      expect(coffeeLogger.fileIsOpen()).to.be.true
+
+    it 'adds and saves records', ->
+      mocks.file.savedData = 'saved data'
+      mocks.file.save = (data) ->
+        mocks.file.savedData = data
+
+      coffeeLogger = CoffeeLogger(file: mocks.file)
+
+      newRecord = {barista: 'intern', coffeeQuality: 'poor'}
+      coffeeLogger.addRecord(newRecord)
+
+      expect(coffeeLogger.history()).to.deep.include(newRecord)
+      expect(mocks.file.savedData).to.be.an('object')
+      expect(mocks.file.savedData.history).to.deep.include(newRecord)
