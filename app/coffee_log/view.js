@@ -4,6 +4,10 @@ define(function(require) {
 
   var viewMarkup = require('text!coffee_log/view.html');
   var rowMarkup = require('text!coffee_log/row.html');
+  var fieldTypeMap = {
+    'number': Number,
+    'text': String,
+  };
 
   var CoffeeLogView = function(deps) {
     var initialize = function() {
@@ -14,6 +18,7 @@ define(function(require) {
 
     var renderView = function() {
       instance.$el.html(viewMarkup);
+      $newRecord().find('[name="barista"]').val(deps.barista);
     };
 
     var renderContent = function() {
@@ -33,12 +38,10 @@ define(function(require) {
 
     var renderHistoryRow = function(record) {
       var $row = $(rowMarkup);
-      $row.find('.date').text(record.date);
-      $row.find('.barista').text(record.barista);
-      $row.find('.method').text(record.method);
-      $row.find('.time').text(record.time);
-      $row.find('.temperature').text(record.temperature);
-      $row.find('.grind').text(record.grind);
+      for (var key in record) {
+        var $cell = $row.find('.' + key);
+        $cell.text(String(record[key]));
+      }
       return $row;
     };
 
@@ -60,15 +63,13 @@ define(function(require) {
 
     var addRecord = function() {
       var $record = $newRecord();
-      var record = {
-        date: new Date().toDateString(),
-        barista: $record.find('.barista').val(),
-        method: $record.find('.method').val(),
-        grind: $record.find('.grind').val(),
-        time: $record.find('.time').val(),
-        temperature: $record.find('.temperature').val(),
-      };
-      $record.find('input[type="text"]').val('');
+      var record = {};
+
+      $record.find('.value').each(function() {
+        var $field = $(this);
+        var typeCast = fieldTypeMap[$field.attr('type')] || String;
+        record[$field.attr('name')] = typeCast($field.val());
+      });
 
       deps.coffeeLogger.addRecord(record);
       renderHistoryRow(record, []).appendTo($historyTable());
