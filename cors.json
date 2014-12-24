@@ -1,7 +1,8 @@
 [
   {
     "origin": [
-      "http://localhost:3333"
+      "http://localhost:3333",
+      "http://barista-pro.shapenav.com"
     ],
     "responseHeader": [
       "Accept",
