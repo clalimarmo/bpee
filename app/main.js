@@ -19,6 +19,7 @@ define(function(require) {
   var FileSelectorView = require('file_selector/view');
   var CoffeeLogger = require('coffee_log/coffee_logger');
   var CoffeeVisualizer = require('coffee_visualizer');
+  var ClassSelectView = require('class_select_view');
 
   var authenticator = require('google-oauther');
   var datastore = JsonGCS({
@@ -30,6 +31,17 @@ define(function(require) {
 
   var initializeApp = function() {
     $(function() {
+      ClassSelectView({
+        container: $('#view-selector'),
+        target: 'main',
+        label: 'View',
+        initialValue: 'show-log',
+        classes: {
+          'log': 'show-log',
+          'quality by time and temperature': 'show-visualizations',
+        }
+      });
+
       var coffeeLogger = CoffeeLogger({file: file});
       CoffeeLogView({
         barista: authenticator.user().displayName,
@@ -44,7 +56,7 @@ define(function(require) {
       });
 
       var fileSelectorView = FileSelectorView({
-        container: $('nav'),
+        container: $('#file-selector'),
         newFilePrompt: function(_prompt) { return window.prompt(_prompt); },
         file: file,
       });

@@ -1,4 +1,8 @@
-main table {
+main.show-log #log {
+  display: block;
+}
+#log {
+  display: none;
   margin: 10px;
   border-collapse: collapse;
   td {
@@ -12,6 +16,6 @@ main table {
     padding-left: 1em;
   }
 }
-main .nothing-loaded {
+#log .nothing-loaded {
   padding: 10px;
 }

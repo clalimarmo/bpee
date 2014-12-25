@@ -16,12 +16,17 @@ header {
     color: gray;
   }
   nav {
+    font-size: .8em;
+    color: #999;
     position: absolute;
     text-align: right;
     padding: 10px;
     right: 0;
     top: 0;
-    font-size: .8em;
-    color: #999;
+
+    > div {
+      padding: 0 10px;
+      display: inline-block;
+    }
   }
 }

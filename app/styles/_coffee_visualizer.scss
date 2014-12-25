@@ -1,4 +1,8 @@
+main.show-visualizations #visualizations {
+  display: block;
+}
 #visualizations {
+  display: none;
   font-size: .8em;
   .axis {
     fill: none;
