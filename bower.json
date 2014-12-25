@@ -20,7 +20,8 @@
     "backbone-amd": "~1.1.0",
     "lodash": "~2.4.1",
     "json-gcs": "~0.0.8",
-    "google-oauther": "git@github.com:clalimarmo/google-oauther#~0.0.3"
+    "google-oauther": "git@github.com:clalimarmo/google-oauther#~0.0.3",
+    "d3": "~3.5.2"
   },
   "devDependencies": {}
 }

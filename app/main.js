@@ -6,6 +6,7 @@ requirejs.config({
     'underscore': 'lib/lodash/dist/lodash',
     'json-gcs': 'lib/json-gcs/dist/json-gcs',
     'google-oauther': 'lib/google-oauther/dist/google-oauther',
+    'd3': 'lib/d3/d3',
   },
   shim: {}
 });
@@ -17,6 +18,7 @@ define(function(require) {
   var CoffeeLogView = require('coffee_log/view');
   var FileSelectorView = require('file_selector/view');
   var CoffeeLogger = require('coffee_log/coffee_logger');
+  var CoffeeVisualizer = require('coffee_visualizer');
 
   var authenticator = require('google-oauther');
   var datastore = JsonGCS({
@@ -31,8 +33,14 @@ define(function(require) {
       var coffeeLogger = CoffeeLogger({file: file});
       CoffeeLogView({
         barista: authenticator.user().displayName,
-        container: $('main'),
+        container: $('#log'),
         coffeeLogger: coffeeLogger,
+      });
+      CoffeeVisualizer({
+        coffeeLogger: coffeeLogger,
+        container: '#visualizations',
+        width: 500,
+        height: 500,
       });
 
       var fileSelectorView = FileSelectorView({

@@ -5,15 +5,15 @@ define(function() {
     var instance = {};
 
     var history = [];
-    var onFileLoadedCallbacks = [];
+    var onChangedCallbacks = [];
 
     var initialize = function() {
       file.onLoaded(onFileLoaded);
     };
 
-    var runOnFileLoadedCallbacks = function() {
-      for (var i in onFileLoadedCallbacks) {
-        onFileLoadedCallbacks[i]();
+    var runOnChangedCallbacks = function() {
+      for (var i in onChangedCallbacks) {
+        onChangedCallbacks[i]();
       }
     };
 
@@ -28,7 +28,7 @@ define(function() {
 
     var onFileLoaded = function() {
       importData(file.data());
-      runOnFileLoadedCallbacks();
+      runOnChangedCallbacks();
     };
 
     var save = function() {
@@ -42,14 +42,17 @@ define(function() {
     instance.addRecord = function(record) {
       record.date = new Date();
       history.push(record);
+      runOnChangedCallbacks();
       save();
     };
 
-    instance.onFileLoaded = function(callback) {
+    instance.onChanged = function(callback) {
       if (typeof callback === 'function') {
-        onFileLoadedCallbacks.push(callback);
+        onChangedCallbacks.push(callback);
       }
     };
+    //alias
+    instance.onFileLoaded = instance.onChanged;
 
     instance.fileIsOpen = function() {
       return deps.file.filename() !== null;

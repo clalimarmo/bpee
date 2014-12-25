@@ -1,0 +1,11 @@
+#visualizations {
+  font-size: .8em;
+  .axis {
+    fill: none;
+    stroke: #aaa;
+    stroke-width: 1px;
+  }
+  .dot {
+    cursor: pointer;
+  }
+}
