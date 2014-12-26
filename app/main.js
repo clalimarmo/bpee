@@ -51,8 +51,6 @@ define(function(require) {
       CoffeeVisualizer({
         coffeeLogger: coffeeLogger,
         container: '#visualizations',
-        width: 500,
-        height: 500,
       });
 
       var fileSelectorView = FileSelectorView({
