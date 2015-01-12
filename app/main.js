@@ -13,18 +13,17 @@ requirejs.config({
 define(function(require) {
   var $ = require('jquery');
   var JsonGCS = require('json-gcs');
-  var DatastoreFile = require('datastore_file');
   var CoffeeLogView = require('coffee_log/view');
   var FileSelectorView = require('file_selector/view');
   var CoffeeLogger = require('coffee_log/coffee_logger');
 
   var authenticator = require('google-oauther');
-  var datastore = JsonGCS({
+  var datastore = JsonGCS.Storage({
     http: {ajax: $.ajax},
     authenticator: authenticator,
     bucketName: 'smartlogic_bpee',
   });
-  var file = DatastoreFile({datastore: datastore});
+  var file = JsonGCS.File({datastore: datastore});
 
   var initializeApp = function() {
     $(function() {
