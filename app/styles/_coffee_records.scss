@@ -4,16 +4,23 @@ main.show-log #log {
 #log {
   display: none;
   margin: 10px;
-  border-collapse: collapse;
-  td {
-    vertical-align: top;
-    padding: 5px 15px;
-    border: 1px solid #ccc;
-  }
-  .reviews ul {
-    margin: 0;
-    padding: 0;
-    padding-left: 1em;
+  font-size: .9em;
+  table {
+    border-collapse: collapse;
+    td {
+      vertical-align: top;
+      padding: 5px 15px;
+      border: 1px solid #ccc;
+      &.numerical {
+        font-family: monospace;
+        text-align: right;
+      }
+    }
+    .reviews ul {
+      margin: 0;
+      padding: 0;
+      padding-left: 1em;
+    }
   }
 }
 #log .nothing-loaded {
